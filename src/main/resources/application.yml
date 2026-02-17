@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: auth-service
+            uri: http://localhost:8081
+            predicates:
+              - Path=/api/auth/**
+            filters:
+              - StripPrefix=1
+          - id: movies-service
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/movies/**
+            filters:
+              - StripPrefix=1
+          - id: artists-service
+            uri: http://localhost:8083
+            predicates:
+              - Path=/api/artists/**
+            filters:
+              - StripPrefix=1
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/media-app
