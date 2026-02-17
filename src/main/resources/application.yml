@@ -8,22 +8,58 @@ spring:
     gateway:
       mvc:
         routes:
-          - id: auth-service
+          - id: authentification-api
             uri: http://localhost:8081
             predicates:
               - Path=/api/auth/**
             filters:
               - StripPrefix=1
-          - id: movies-service
+          - id: user-api
             uri: http://localhost:8082
+            predicates:
+              - Path=/api/user/**
+            filters:
+              - StripPrefix=1
+          - id: movie-api
+            uri: http://localhost:8083
             predicates:
               - Path=/api/movies/**
             filters:
               - StripPrefix=1
-          - id: artists-service
-            uri: http://localhost:8083
+          - id: artist-api
+            uri: http://localhost:8084
             predicates:
               - Path=/api/artists/**
+            filters:
+              - StripPrefix=1
+          - id: reservation-api
+            uri: http://localhost:8085
+            predicates:
+              - Path=/api/reservation/**
+            filters:
+              - StripPrefix=1
+          - id: review-api
+            uri: http://localhost:8086
+            predicates:
+              - Path=/api/review/**
+            filters:
+              - StripPrefix=1
+          - id: payment-api
+            uri: http://localhost:8087
+            predicates:
+              - Path=/api/payment/**
+            filters:
+              - StripPrefix=1
+          - id: poster-api
+            uri: http://localhost:8088
+            predicates:
+              - Path=/api/poster/**
+            filters:
+              - StripPrefix=1
+          - id: scrapping-api
+            uri: http://localhost:8089
+            predicates:
+              - Path=/api/scrapping/**
             filters:
               - StripPrefix=1
   security:
