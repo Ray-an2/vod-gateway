@@ -1,0 +1,81 @@
+openapi: 3.1.0
+info:
+  title: gateway-api
+  description: Gateway permettant de rediriger les requêtes client vers les services internes. Elle ne génère pas de token mais transmet les requêtes vers l'API authentificate pour la gestion de l'authentification.
+  version: 1.0.0
+
+servers:
+  - url: https://gateway.com/api
+    description: Serveur de production
+
+paths:
+  /authentication:
+    post:
+      summary: Redirection vers le service d'authentification
+      description: Redirige la demande de connexion vers l'API authentificate. La génération du token est gérée par le service authentificate.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - pseudo
+                - mdp
+              properties:
+                pseudo:
+                  type: string
+                  description: Pseudo de l'utilisateur
+                  example: bosswasa
+                mdp:
+                  type: string
+                  description: Mot de passe de l'utilisateur
+                  example: password
+      responses:
+        '200':
+          description: Réponse transmise depuis l'API authentificate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Identifiants invalides (retour authentificate)
+        '404':
+          description: Utilisateur non trouvé (retour authentificate)
+
+  /verify-token:
+    get:
+      summary: Vérification de token
+      description: La gateway appelle l'API authentificate pour vérifier si le token est valide.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Token à vérifier
+          schema:
+            type: string
+            example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      responses:
+        '200':
+          description: Token valide
+        '401':
+          description: Token invalide ou expiré passé un certain délai
+
+components:
+  schemas:
+    AuthResponse:
+      type: object
+      required:
+        - id
+        - role
+        - token
+      properties:
+        id:
+          type: string
+          description: Pseudo de l'utilisateur authentifié
+        role:
+          type: string
+          description: Rôle de l'utilisateur
+        token:
+          type: string
+          description: Token JWT généré par l'API authentificate
