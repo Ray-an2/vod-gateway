@@ -1,31 +1,19 @@
 package com.spring.gateway.entities.Authentificate;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
-  private final String id;
-  private final String pseudo;
-  private final String password;
-  private final String role;
-
-  public User(String id, String pseudo, String password, String role) {
-    this.id = id;
-    this.pseudo = pseudo;
-    this.password = password;
-    this.role = role;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public String getPseudo() {
-    return pseudo;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public String getRole() {
-    return role;
-  }
+  @Id
+  private String id;
+  private String pseudo;
+  private String password;
+  private String role;
 }
