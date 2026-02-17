@@ -2,15 +2,15 @@ server:
   port: 8080
 
 services:
-  auth-uri: ${AUTH_SERVICE_URI:http://localhost:8081}
-  user-uri: ${USER_SERVICE_URI:http://localhost:8082}
-  movie-uri: ${MOVIE_SERVICE_URI:http://localhost:8083}
-  artist-uri: ${ARTIST_SERVICE_URI:http://localhost:8084}
-  reservation-uri: ${RESERVATION_SERVICE_URI:http://localhost:8085}
-  review-uri: ${REVIEW_SERVICE_URI:http://localhost:8086}
-  payment-uri: ${PAYMENT_SERVICE_URI:http://localhost:8087}
-  poster-uri: ${POSTER_SERVICE_URI:http://localhost:8088}
-  scrapping-uri: ${SCRAPPING_SERVICE_URI:http://localhost:8089}
+  auth-uri: ${AUTH_SERVICE_URI}
+  user-uri: ${USER_SERVICE_URI}
+  movie-uri: ${MOVIE_SERVICE_URI}
+  artist-uri: ${ARTIST_SERVICE_URI}
+  reservation-uri: ${RESERVATION_SERVICE_URI}
+  review-uri: ${REVIEW_SERVICE_URI}
+  payment-uri: ${PAYMENT_SERVICE_URI}
+  poster-uri: ${POSTER_SERVICE_URI}
+  scrapping-uri: ${SCRAPPING_SERVICE_URI}
 
 spring:
   application:
@@ -94,4 +94,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8081/realms/media-app}
+          issuer-uri: ${KEYCLOAK_ISSUER_URI}
