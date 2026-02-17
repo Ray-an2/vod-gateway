@@ -5,9 +5,12 @@ import com.spring.gateway.dtos.Authentificate.AuthRespDto;
 import com.spring.gateway.entities.Authentificate.User;
 import com.spring.gateway.mappers.Authentificate.UserMapper;
 import com.spring.gateway.repositories.Authentificate.UserRepository;
+import java.time.Instant;
+import java.util.Map;
 import com.spring.gateway.services.UserService;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
@@ -15,8 +18,11 @@ import org.springframework.http.HttpStatus;
 @Service
 public class UserServiceImpl implements UserService {
 
+  private static final long TOKEN_TTL_SECONDS = 3600;
+
   private final UserRepository userRepository;
   private final UserMapper userMapper;
+  private final Map<String, Instant> tokenExpirations = new ConcurrentHashMap<>();
 
   public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
     this.userRepository = userRepository;
@@ -40,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     String token = UUID.randomUUID().toString();
-    userRepository.saveToken(token);
+    tokenExpirations.put(token, Instant.now().plusSeconds(TOKEN_TTL_SECONDS));
     return userMapper.toAuthResponse(user, token);
   }
 
@@ -60,6 +66,14 @@ public class UserServiceImpl implements UserService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token vide");
     }
 
-    return userRepository.isTokenValid(token);
+    Instant expiration = tokenExpirations.get(token);
+    if (expiration == null) {
+      return false;
+    }
+    if (Instant.now().isAfter(expiration)) {
+      tokenExpirations.remove(token);
+      return false;
+    }
+    return true;
   }
 }
