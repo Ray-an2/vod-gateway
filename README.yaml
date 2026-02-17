@@ -9,10 +9,10 @@ servers:
     description: Serveur de production
 
 paths:
-  /authentication:
+  /api/auth/login:
     post:
       summary: Redirection vers le service d'authentification
-      description: Redirige la demande de connexion vers l'API authentificate. La génération du token est gérée par le service authentificate.
+      description: Redirige la demande de connexion vers l'API d'authentification. La génération du token est gérée par le service d'authentification.
       requestBody:
         required: true
         content:
@@ -33,20 +33,20 @@ paths:
                   example: password
       responses:
         '200':
-          description: Réponse transmise depuis l'API authentificate
+          description: Réponse transmise depuis l'API d'authentification
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
         '401':
-          description: Identifiants invalides (retour authentificate)
+          description: Identifiants invalides (retour authentification)
         '404':
-          description: Utilisateur non trouvé (retour authentificate)
+          description: Utilisateur non trouvé (retour authentification)
 
-  /verify-token:
+  /api/auth/verify-token:
     get:
       summary: Vérification de token
-      description: La gateway appelle l'API authentificate pour vérifier si le token est valide.
+      description: La gateway appelle l'API d'authentification pour vérifier si le token est valide.
       parameters:
         - name: Authorization
           in: header
