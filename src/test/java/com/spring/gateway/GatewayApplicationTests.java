@@ -7,17 +7,15 @@ import com.spring.gateway.dtos.Authentificate.AuthRespDto;
 import com.spring.gateway.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class GatewayApplicationTests {
 
   @Autowired
   private UserService userService;
-
-  @Test
-  void contextLoads() {
-  }
 
   @Test
   void loginAndVerifyTokenFlow() {
