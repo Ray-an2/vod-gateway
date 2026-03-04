@@ -1,0 +1,19 @@
+services:
+  auth-uri: http://localhost:9001
+  user-uri: http://localhost:9002
+  movie-uri: http://localhost:9003
+  artist-uri: http://localhost:9004
+  reservation-uri: http://localhost:9005
+  review-uri: http://localhost:9006
+  payment-uri: http://localhost:9007
+  poster-uri: http://localhost:9008
+  scrapping-uri: http://localhost:9009
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:gatewaydb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;NON_KEYWORDS=USER
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/test
